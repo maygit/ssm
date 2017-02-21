@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 运行环境 -->
+	<environments default="unit">
+	    <!-- 测试环境 -->
+		<environment id="unit">
+			 <!-- 事务如何处理: JDBC:简单使用jdbc提交数据或回滚   
+			  MANAGERD:它从来不会提交或回滚一个事务。而是让其他容器来管理事务的整个生命周期 -->
+		     <transactionManager type="JDBC"></transactionManager>
+		     <!-- 数据源:POOLED连接池   UNPOOLED非连接池 -->
+		     <dataSource type="POOLED">
+		        <property name="driver" value="com.mysql.jdbc.Driver"></property>
+		        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test"></property>
+		        <property name="username" value=""></property>
+		        <property name="password" value="123456"></property>
+		     </dataSource>
+		</environment>
+		
+	</environments>	
+	
+	
+	<!-- 连接实体类的映射文件  -->
+	<mappers>
+	   <!-- 连接接口文件 -->
+	   <mapper class="com.shop.dao.UserMapper"></mapper>
+	</mappers>
+	
+</configuration>

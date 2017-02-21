@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	    <!-- 扫描指定的包-->
+    <context:component-scan base-package="com.shop">
+    </context:component-scan>
+    <!-- 使用Aspectj注解起作用:自动为其生成代理对象 -->
+    <aop:aspectj-autoproxy /> 
+    
+    
+    
+    <!-- 引入外部数据源配置信息 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+    	<property name="locations">
+    		<value>classpath:db.properties</value>
+    	</property>
+    </bean>
+    
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driverClass}"></property>
+		<property name="url" value="${jdbcUrl}"></property>
+		<property name="username" value="${user}"></property>
+		<property name="password" value="${password}"></property>
+    </bean>
+	    
+    <!-- 配置SqlSession工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"></property>
+    	<property name="configLocation" value="classpath:mybatis.cfg.xml"></property>
+    	<!--自动扫描需要定义类别名的包  将包名+类名  作为类的别名  -->
+    	<property name="typeAliasesPackage" value="com.shop.entity"></property>
+    </bean>
+    
+    <!-- 自动扫描所有的Mapper接口 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="com.shop.dao"></property>
+    </bean>
+ 	
+    <!-- 配置事务管理器 -->
+ 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+ 		<property name="dataSource" ref="dataSource"></property>
+ 	</bean>
+ 	
+ 	<!-- 定义通知 指定事务管理器 -->
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="reg" propagation="REQUIRED" read-only="false" 
+			rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+ 	</tx:advice> -->
+ 	
+ 	<!-- AOP 切面 -->
+	<!-- <aop:config> -->
+		<!-- 定义的切点-->
+	<!--	<aop:pointcut expression="execution(public void com.shop.service.impl.UserServiceImpl.*(..))" id="serviceMethod"/>
+	-->
+		<!-- 指定通知指向目标位置 -->
+	<!--	<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>-->
+	<!--</aop:config>-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+  </beans>

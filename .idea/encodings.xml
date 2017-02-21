@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="false" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/com/shop/hanlder/UserHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/shop/service/IUserService.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/shop/service/impl/UserServiceImpl.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/shop/test/TestMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/笔记.txt" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
+

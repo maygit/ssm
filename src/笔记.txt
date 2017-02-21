@@ -1,0 +1,102 @@
+SSM整合
+   SpringMVC4.0+Spring4.0+Mybatis3.0 实现项目开发
+  1.整合之后的运行的流程
+  
+  2.开发步骤
+    a)导入jar包
+	    asm-3.3.1.jar
+		aspectjweaver-1.8.9.jar
+		cglib-2.2.2.jar
+		classmate-1.3.1.jar
+		com.springsource.org.aopalliance-1.0.0.jar
+		commons-io-2.5.jar
+		commons-logging-1.1.1.jar
+		hibernate-validator-5.4.0.Beta1.jar
+		hibernate-validator-annotation-processor-5.4.0.Beta1.jar
+		jackson-annotations-2.3.0-rc2-20131026.040502-1.jar
+		jackson-core-2.3.0-rc2-20131112.051657-6.jar
+		jackson-databind-2.3.0-rc2-20131109.050848-7.jar
+		jboss-logging-3.3.0.Final.jar
+		log4j-1.2.16.jar
+		mybatis-3.1.0.jar
+		mybatis-spring-1.3.0.jar
+		ojdbc5.jar
+		slf4j-api-1.6.2.jar
+		slf4j-log4j12-1.6.2.jar
+		spring-aop-4.0.9.RELEASE.jar
+		spring-beans-4.0.9.RELEASE.jar
+		spring-context-4.0.9.RELEASE.jar
+		spring-core-4.0.9.RELEASE.jar
+		spring-expression-4.0.9.RELEASE.jar
+		spring-web-4.0.9.RELEASE.jar
+		spring-webmvc-4.0.9.RELEASE.jar
+		validation-api-1.1.0.Final.jar
+    b)创建配置文件 src目录 或者 WEB-INF/classes/
+       applicationContext.xml
+       db.properties
+       springmvc.xml
+       mybatis.cfg.xml
+    c.配置web.xml
+      1)DispatcherServlet控制器 ,配置springmvc的配置文件
+        
+      2)ContextLoaderListener监听器
+      
+      3)配置spring配置文件
+      
+    d)创建包结构 创建对应类型
+    
+    
+    e)配置 applicationContext.xml springmvc.xml  
+      1)springmvc
+          <!-- 启动注解 注册服务 如:验证框架 转换器 -->
+	    <mvc:annotation-driven/>    
+	    
+	    <!-- 启动自动扫描 -->
+	    <context:component-scan base-package="com.shop">
+	    	<context:include-filter type="annotation" 
+	    			expression="org.springframework.stereotype.Controller"/>
+	    </context:component-scan>
+	    
+	    <!-- 配置视图解析器 -->
+	    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	    	<property name="prefix" value="/WEB-INF/views/"></property>
+	    	<property name="suffix" value=".jsp"></property>
+	    </bean>
+     2)spring配置文件 
+        a)扫描指定的包
+          <context:component-scan base-package="com.shop">
+    	   </context:component-scan>
+        b)使用Aspectj注解起作用:自动为其生成代理对象 
+    		<aop:aspectj-autoproxy/>
+    	c)引入外部资源文件  数据库配置信息
+    	    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		    	<property name="locations">
+		    		<value>classpath:db.properties</value>
+		    	</property>
+		    </bean>	
+		d)配置数据源
+		   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${driverClass}"></property>
+			<property name="url" value="${jdbcUrl}"></property>
+			<property name="username" value="${user}"></property>
+			<property name="password" value="${password}"></property>
+	       </bean>
+	    e)配置SqlSession工厂
+	    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    	<property name="dataSource" ref="dataSource"></property>
+	    	<property name="configLocation" value="classpath:mybatis.cfg.xml"></property>
+	    	<!--自动扫描需要定义类别名的包  将包名+类名  作为类的别名  -->
+	    	<property name="typeAliasesPackage" value="com.shop.entity"></property>
+	    </bean>
+	    f)扫描mapper接口
+	    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    		<property name="basePackage" value="com.shop.dao"></property>
+	    </bean>
+	    g)配置事务
+	 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 		<property name="dataSource" ref="dataSource"></property>
+	 	</bean>
+	    
+	f)开发代码
+	      
+	    

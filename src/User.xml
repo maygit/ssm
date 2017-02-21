@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UserDAO">
+	<!-- 建立表与对象的映射关系 -->
+	<resultMap id="UserDO" class="com.shop.entity.User">
+		<result property="id" column="userid" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+        <result property="age" column="age" />
+	</resultMap>
+	
+	<insert id="insert" parameterClass="com.shop.entity.User">
+		insert into t_user(userid,name,password,age)
+		values (
+        #id#,
+		#name#,
+		#password#,
+        #age#
+		)
+	</insert>
+	
+	<delete id="deleteUserByName" parameterClass="java.lang.String">
+		delete from t_user where name = #name#
+	</delete>
+	
+	<update id="updateUser" parameterClass="com.shop.entity.User">
+		update t_user set
+		NAME = #name#,
+		PASSWORD = #password#,
+        age = #age#,
+		where userid = #id#
+	</update>
+	
+	<!-- resultClass与上方sqlMap定义的映射对应 -->
+	<select id="selectUser" parameterClass="java.lang.String" resultMap="UserDO">
+		select userID,NAME,PASSWORD,age
+		from t_user
+		where name = #name#
+	</select>
+	
+</sqlMap>
